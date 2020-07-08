@@ -4,8 +4,14 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
+/*Produtos*/
 const produtoRoutes = require('./api/routes/produtos');
+
+/*Fornecedor*/
+const fornecedorRoutes = require('./api/routes/fornecedor');
+
+/*Ordem de Serviço*/
+const osRoutes = require('./api/routes/os');
 
 
 mongoose.connect('mongodb+srv://unidesc:unidesc@unidesc-pw-k9bmc.mongodb.net/test?retryWrites=true&w=majority',
@@ -32,13 +38,31 @@ app.use((req, res, next)=>{
         next();
     });
 
-
+/*Produtos*/
 app.use('/produtos', produtoRoutes);
 
 app.use((req, res, next) =>{
     const error = new Error('not foud');
     error.status = 404;
     next(error);
+});
+
+/*Ordem de serviço*/
+app.use('/os', osRoutes);
+
+app.use((req, res, next) =>{
+        const error = new Error('not foud');
+        error.status = 404;
+        next(error);
+});
+
+/*Fornecedor*/
+app.use('/fornecedor', fornecedorRoutes);
+
+app.use((req, res, next) =>{
+        const error = new Error('not foud');
+        error.status = 404;
+        next(error);
     
 });
 

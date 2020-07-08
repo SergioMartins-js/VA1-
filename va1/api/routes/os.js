@@ -1,26 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const Produto = require('../models/produtos');
+const ordem = require('../models/os');
 const mongoose = require('mongoose')
 
 router.get('/', (req, res, next) =>{
     res.status(200).json({
-        message: 'GET request para /produtos'
+        message: 'GET request para /os'
     });
 });
 
 router.post('/', (req, res, next) =>{
     
-    const produto = new Produto({
+    const ordem = new Ordem({
         _id: new mongoose.Types.ObjectId(),
-            nome: req.body.nome,
-            preco: req.body.preco
+            numero: req.body.numero,
+            departamento: req.body.departamento
     });
-    produto.save()
+    ordem.save()
     .then(result => {
         res.status(201).json({
-            message: 'POST request para /produtos',
-            produtoCriado: produto
+            message: 'POST request para /os',
+            ordemCriado: ordem
         });
     })
     .catch(err => {
@@ -33,9 +33,9 @@ router.post('/', (req, res, next) =>{
     
 });
 
-router.get('/:produtoId', (req, res, next) =>{
-    const id = req.params.produtoId;
-    Produto.findById(id)
+router.get('/:osId', (req, res, next) =>{
+    const id = req.params.osId;
+    ordem.findById(id)
     .exec()
     .then(doc => {
         res.status(200).json(doc);
@@ -48,17 +48,17 @@ router.get('/:produtoId', (req, res, next) =>{
 
 
 
-    router.put('/:atualizaProdutoId', (req, res, next) => {
-       const id = req.params.produtoId;
-       Produto.updateOne(id, {
+    router.put('/:atualizaosId', (req, res, next) => {
+       const id = req.params.ordemId;
+       Ordem.updateOne(id, {
           $set: {
-             name: req.body.name,
-             price: req.body.price
+             number: req.body.number,
+             departament: req.body.departament
           }
        })
           .then(result => {
              res.status(201).json({
-                message: "Produto atualizado com sucesso!"
+                message: "Ordem de serviço atualizada com sucesso!"
              });
           })
           .catch(err => {
@@ -69,14 +69,14 @@ router.get('/:produtoId', (req, res, next) =>{
     });
     
 
-    router.delete('/:deleteProdutoId', (req, res, next) => {
-       const id = req.params.produtoId;
-       Produto.deleteOne(id)
+    router.delete('/:deleteosId', (req, res, next) => {
+       const id = req.params.osId;
+       Ordem.deleteOne(id)
           .exec()
           .then(result => {
              console.log(result);
              res.status(200).json({
-                message: 'Produto apagado com sucesso!'
+                message: 'Ordem de serviço apagada com sucesso!'
              })
           })
           .catch(err => {
@@ -86,10 +86,10 @@ router.get('/:produtoId', (req, res, next) =>{
           });
     });
 
-    vm.listarProdutos = function () {
-        $http.get(HOST_HTTP + '/produtos').then(
+    vm.listarOs = function () {
+        $http.get(HOST_HTTP + '/os').then(
            function (response) {
-              vm.produtos = response.data;
+              vm.os = response.data;
            },
            function (err) {
               console.log(err)
@@ -97,11 +97,10 @@ router.get('/:produtoId', (req, res, next) =>{
         );
      };
 
-    vm.adicionarProduto = function () {
+    vm.adicionarOs = function () {
 
-        vm.produtos.push(angular.copy(vm.produto));
+        vm.os.push(angular.copy(vm.os));
      };
-
 
 
 module.exports = router;
